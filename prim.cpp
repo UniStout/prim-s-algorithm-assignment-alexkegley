@@ -25,16 +25,20 @@ bool allVisited(points points){
     return true;
 }
 
-void PrimsAlgorithm(int Vertices, int NumEdges, std::vector<edge> edges, std::vector<edge> visitedEdges, points points) {
+void PrimsAlgorithm(int Vertices, int NumEdges, std::vector<edge>& edges, std::vector<edge>& visitedEdges, points& points) {
     int lastVisitedPoint = 0;
     int lowestWeight = 9999;
     int deletionIndex = 0;
     edge lowestWeightEdge;
     std::vector<edge> conectedEdges;
     for(int i = 0; i < NumEdges; i++){
-        if(edges[i].conection1 == lastVisitedPoint){
+        if(points.visited[edges[i].conection1] && !points.visited[edges[i].conection2] || !points.visited[edges[i].conection1] && points.visited[edges[i].conection2]){
             conectedEdges.push_back(edges[i]);
         }
+    }
+    if(conectedEdges.empty()){
+        std::cout << "All points have been visited." << std::endl;
+        return;
     }
     for(int i = 0; i < conectedEdges.size(); i++){
         if(conectedEdges[i].weight < lowestWeight){
@@ -77,7 +81,7 @@ int main()
             break;
         }
     }
-    for(int i = 0; i < points.pointsID.size(); i++){
+    for(int i = 0; i < Vertices; i++){
         points.visited.push_back(false);
     }
     points.visited[0] = true;
